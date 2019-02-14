@@ -1,4 +1,23 @@
-#include "not_main.h"
+#include "Nbiot.h"
+
+
+
+void nbiotInit(){
+  IotSerial.begin(9600);
+  Serial.println("Connecting to NB-IoT module... ");
+  while (!nbiot.begin(IotSerial)){
+    Serial.println("Unable to connect to Nbiot, Trying again in 3. ");
+    delay(3000);
+  }
+  while (!nbiot.createSocket()){
+    Serial.print("Error creating socket. Error code: ");
+    Serial.println(nbiot.errorCode(),DEC);
+    delay(100);
+  }
+  registeringOnNetwork();
+  Serial.println("Nbiot setup finished. ");
+
+}
 
 bool sendStringData(IPAddress ip, const uint16_t port, String str  ){
   return nbiot.sendString(remoteIP, REMOTE_PORT, str);
@@ -10,11 +29,15 @@ bool sendByteData(IPAddress ip, const uint16_t port, String str, const char *dat
 
 
 void registeringOnNetwork(){
-    nbiot.online();
-    Serial.print("Connecting: ");
-    Serial.println(nbiot.registrationStatus());
-    Serial.println(nbiot.rssi());
-    delay(5000);  
+    while (nbiot.registrationStatus() != 2){
+      nbiot.online();
+      Serial.print("Connecting: ");
+      Serial.println(nbiot.registrationStatus());
+      Serial.println(nbiot.rssi());
+      delay(5000);
+           
+    }
+
 }
 
 size_t receiveData(char * buffer, uint16_t length){
