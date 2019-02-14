@@ -12,5 +12,5 @@ while True:
     data, addr = s.recvfrom(1024)
     now = datetime.datetime.now()
     with open("out2.txt", "a") as f:
-        f.writelines("{}: {}\n".format(now, data.decode("utf-8")))
+        f.writelines("{0:%Y-%b-%d %H:%M:%S}: {1}\n".format(now, data.decode("utf-8")))
     print("Received:", data, " from ", addr)
