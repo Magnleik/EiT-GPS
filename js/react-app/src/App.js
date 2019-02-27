@@ -17,23 +17,6 @@ class App extends Component {
   };
 
   componentDidMount() {
-    /*
-    fetch(apiurl + "?id=" + deviceID, {
-      mode: "cors",
-      headers: {
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*"
-      }
-    })
-      .then(res => {
-        console.log(res);
-        res.json();
-      })
-      .then(data => {
-        this.setState({ data: data });
-        // console.log(data);
-      });
-      */
     request();
   }
 
