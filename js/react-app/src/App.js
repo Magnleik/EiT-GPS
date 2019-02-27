@@ -4,8 +4,8 @@ import Map from "./components/MapComponent";
 import Sidebar from "./components/SidebarComponent"
 
 
-const apiurl = "TODO";
-const deviceID = "TODO2"
+const apiurl = "http://eit19gps-api-heroku.herokuapp.com/request";
+const deviceID = "id1"
 
 class App extends Component {
 
@@ -17,11 +17,14 @@ class App extends Component {
   ]};
 
   componentDidMount() {
-    fetch(apiurl + "id=" + deviceID)
-      .then(res => res.json())
+    fetch(apiurl + "?id=" + deviceID, {mode: 'cors', headers: {Accept: 'application/json', 'Access-Control-Allow-Origin': '*'}})
+      .then(res => {
+        console.log(res)
+        res.json(); 
+      })
       .then(data => {
         this.setState({data: data});
-        console.log(data);
+        // console.log(data);
       })
   }
 

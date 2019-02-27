@@ -34,9 +34,7 @@ export default class Map extends React.Component {
 
   componentDidUpdate() {
     let positions = this.props.data;
-    console.log(positions)
     let position = positions[positions.length-1];
-    console.log(position)
     let marker = L.marker(position).addTo(this.map);
     marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>")
   }
