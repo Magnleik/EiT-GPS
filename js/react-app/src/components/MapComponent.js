@@ -8,14 +8,8 @@ const Wrapper = styled.div`
   height: ${props => props.height};
 `;
 
-const Positions = [
-  [63, 10],
-  [63.43, 10.395],
-  [63.03, 10.405],
-  [63.612, 10.124]
-];
-
 export default class Map extends React.Component {
+
   componentDidMount() {
     this.map = L.map("map", {
       center: [63, 10],
@@ -26,16 +20,25 @@ export default class Map extends React.Component {
     L.tileLayer(
       "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart_graatone&zoom={z}&x={x}&y={y}",
       {
+        attribution: '<a href="http://www.kartverket.no/">Kartverket</a>',
         detectRetina: true,
         maxZoom: 20,
         maxNativeZoom: 17
       }
     ).addTo(this.map);
-    for (let i = 0; i < Positions.length; i++) {
-        let position = Positions[i];
-        let marker = L.marker(position).addTo(this.map);
-        marker.bindPopup("<b>Position " + (i+1) + "</b><br>Lat:" + position[0] + "</br><br>Lng:" + position[1] + "</br>")
-    }
+    let positions = this.props.data;
+    let position = positions[positions.length-1];
+    let marker = L.marker(position).addTo(this.map);
+    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>")
+  }
+
+  componentDidUpdate() {
+    let positions = this.props.data;
+    console.log(positions)
+    let position = positions[positions.length-1];
+    console.log(position)
+    let marker = L.marker(position).addTo(this.map);
+    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>")
   }
 
   render() {
