@@ -17,7 +17,9 @@ class App extends Component {
   };
 
   componentDidMount() {
-    request();
+    request().then(json => {
+      this.setState({ data: json });
+    });
   }
 
   render() {
@@ -42,6 +44,7 @@ const request = async () => {
   const response = await fetch(apiurl + "?id=" + deviceID);
   const json = await response.json();
   console.log(json);
+  return json;
 };
 
 export default App;

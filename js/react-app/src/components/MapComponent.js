@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import styled from "styled-components";
@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   height: ${props => props.height};
 `;
 
-export default class Map extends React.Component {
+export default class Map extends Component {
 
   componentDidMount() {
     this.map = L.map("map", {
