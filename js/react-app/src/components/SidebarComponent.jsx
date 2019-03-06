@@ -39,7 +39,7 @@ export default class Sidebar extends Component {
             value={tag.time}
             key={tag.time}
           >
-            {tag.time}
+            {new Date(tag.time * 1000).toLocaleString()}
           </button>
         ))}
       </Wrapper>
