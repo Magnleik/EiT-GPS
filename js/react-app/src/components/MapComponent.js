@@ -8,15 +8,17 @@ const Wrapper = styled.div`
   height: ${props => props.height};
 `;
 
-export default class Map extends Component {
+let marker;
 
+export default class Map extends Component {
+  
   componentDidMount() {
     this.map = L.map("map", {
       center: [63, 10],
       zoom: 9,
       zoomControl: false
     });
-
+    
     L.tileLayer(
       "http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=norges_grunnkart_graatone&zoom={z}&x={x}&y={y}",
       {
@@ -28,15 +30,17 @@ export default class Map extends Component {
     ).addTo(this.map);
     let positions = this.props.data;
     let position = positions[positions.length-1];
-    let marker = L.marker(position).addTo(this.map);
-    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>")
+    marker = L.marker(position);
+    marker.addTo(this.map);
+    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>");
   }
-
+  
   componentDidUpdate() {
     let positions = this.props.data;
     let position = positions[positions.length-1];
-    let marker = L.marker(position).addTo(this.map);
-    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>")
+    let newLatLng = new L.LatLng(position.lat, position.lng);
+    marker.setLatLng(newLatLng);
+    marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>");
   }
 
   render() {

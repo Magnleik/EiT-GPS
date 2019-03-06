@@ -4,7 +4,7 @@ import Map from "./components/MapComponent";
 import Sidebar from "./components/SidebarComponent";
 
 const apiurl = "http://eit19gps-api-heroku.herokuapp.com/request";
-const deviceID = "17dh0cf43jfkmm";
+const deviceID = "17dh0cf43jfgl8";
 
 class App extends Component {
   state = {
@@ -18,8 +18,17 @@ class App extends Component {
 
   componentDidMount() {
     request().then(json => {
+      if(json === null){
+        return;
+      }
       this.setState({ data: json });
+      console.log(this.state);
     });
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+    }
   }
 
   render() {
@@ -42,6 +51,10 @@ class App extends Component {
 
 const request = async () => {
   const response = await fetch(apiurl + "?id=" + deviceID);
+  console.log(response.status);
+  if(response.status===404){
+    return null;
+  }
   const json = await response.json();
   console.log(json);
   return json;
