@@ -15,12 +15,18 @@ class App extends Component {
       { time: 1550666908, lat: 63.31, lng: 10.5 },
       { time: 1550667908, lat: 63.123456, lng: 10.4 },
       { time: 1550668908, lat: 63.09876, lng: 10.12345 }
-    ]
+    ],
+    currentTime: 1550668908,
+    currentMarker: { lat: 63.09876, lng: 10.12345 }
   };
+
+  changeMarker(time) {
+    this.setState({ currentTime: time });
+  }
 
   componentDidMount() {
     request().then(json => {
-      if(json === null){
+      if (json === null) {
         return;
       }
       this.setState({ data: json });
@@ -29,8 +35,19 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
+    for (let i = 0; i < this.state.data.length; i++) {
+      if (this.state.currentTime === this.state.data[i].time) {
+        this.setState({
+          currentMarker: {
+            lat: this.state.data[i].lat,
+            lng: this.state.data[i].lng
+          }
+        });
+        return;
+      }
     }
+    this.setState({currentMarker: {lat: this.state.data[this.state.data.length-1].lat, lng: this.state.data[this.state.data.length-1].lng}})
+    return;
   }
 
   render() {
@@ -44,7 +61,7 @@ class App extends Component {
         <Map
           height={window.innerHeight + "px"}
           width={window.innerWidth * 0.8 + "px"}
-          data={this.state.data}
+          data={this.state.currentMarker}
         />
       </div>
     );
@@ -54,7 +71,7 @@ class App extends Component {
 const request = async () => {
   const response = await fetch(apiurl + "?id=" + deviceID);
   console.log(response.status);
-  if(response.status===404){
+  if (response.status === 404) {
     return null;
   }
   const json = await response.json();

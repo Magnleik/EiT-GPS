@@ -8,8 +8,8 @@ const Wrapper = styled.div`
 `;
 
 export default class Sidebar extends Component {
-  buttonClicked() {
-    console.log("hello");
+  buttonClicked(event) {
+    this.props.changeMarker(event.target.value);
   }
 
   render() {
@@ -24,6 +24,7 @@ export default class Sidebar extends Component {
             type="button"
             className="btn btn-primary"
             onClick={this.buttonClicked}
+            value={tag.time}
             key={tag.time}
           >
             {tag.time}

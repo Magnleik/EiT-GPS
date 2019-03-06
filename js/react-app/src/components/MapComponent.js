@@ -28,16 +28,15 @@ export default class Map extends Component {
         maxNativeZoom: 17
       }
     ).addTo(this.map);
-    let positions = this.props.data;
-    let position = positions[positions.length-1];
+    console.log(this.props.data);
+    let position = this.props.data;
     marker = L.marker(position);
     marker.addTo(this.map);
     marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>");
   }
   
   componentDidUpdate() {
-    let positions = this.props.data;
-    let position = positions[positions.length-1];
+    let position = this.props.data;
     let newLatLng = new L.LatLng(position.lat, position.lng);
     marker.setLatLng(newLatLng);
     marker.bindPopup("</b><br>Lat:" + position.lat + "</br><br>Lng:" + position.lng + "</br>");
