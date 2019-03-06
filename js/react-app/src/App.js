@@ -4,6 +4,8 @@ import Map from "./components/MapComponent";
 import Sidebar from "./components/SidebarComponent";
 
 const apiurl = "http://eit19gps-api-heroku.herokuapp.com/request";
+
+// Mock: 17dh0cf43jfgl8   Real: 17dh0cf43jfkmm
 const deviceID = "17dh0cf43jfgl8";
 
 class App extends Component {
