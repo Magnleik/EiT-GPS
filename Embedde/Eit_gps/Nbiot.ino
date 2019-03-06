@@ -4,18 +4,18 @@
 
 void nbiotInit(){
   IotSerial.begin(9600);
-  Serial.println("Connecting to NB-IoT module... ");
+  //Serial.println("Connecting to NB-IoT module... ");
   while (!nbiot.begin(IotSerial)){
-    Serial.println("Unable to connect to Nbiot, Trying again in 3. ");
+    //Serial.println("Unable to connect to Nbiot, Trying again in 3. ");
     delay(3000);
   }
   while (!nbiot.createSocket()){
-    Serial.print("Error creating socket. Error code: ");
-    Serial.println(nbiot.errorCode(),DEC);
+    //Serial.print("Error creating socket. Error code: ");
+    //Serial.println(nbiot.errorCode(),DEC);
     delay(100);
   }
   registeringOnNetwork();
-  Serial.println("Nbiot setup finished. ");
+  //Serial.println("Nbiot setup finished. ");
 }
 
 
@@ -39,7 +39,7 @@ void registeringOnNetwork(){
       nbiot.online();
       Serial.print("Connecting: ");
       Serial.println(nbiot.registrationStatus());
-      Serial.println(nbiot.rssi());
+      //Serial.println(nbiot.rssi());
       delay(5000);
            
     }
@@ -49,27 +49,45 @@ void registeringOnNetwork(){
 
 
 void transmitData(){
+  //Serial.println("Trying to send");
+  //Serial.print("Gpsminutes: ");
+  //Serial.println(getGPSMinutes());
+  //Serial.print("localminut: ");
+  //Serial.println(localMin);
   if ((getGPSMinutes() == localMin)&&(getGPSFix())) {
     localMin = getGPSMinutes()+1;
     if(localMin == 60){
       localMin = 0; 
     }
+    //Serial.println("Trying to send2");
+    //Serial.print("GPS time: ");
+    //Serial.print(getGPSMinutes());
+    //Serial.print(":");
+    //Serial.print(getGPSSeconds());
 
-    Serial.print("GPS time: ");
-    Serial.print(getGPSMinutes());
-    Serial.print(":");
-    Serial.print(getGPSSeconds());
-
-
-    char latitude[8];
-    char longitude[8];
-    dtostrf(getGPSLatitude(), 8, 4, latitude);
-    dtostrf(getGPSLongitude(), 8, 4, longitude);
+    char latitude[9];
+    char longitude[9];
+    dtostrf(getGPSLatitude(), 8, 3, latitude);
+    dtostrf(getGPSLongitude(), 8, 3, longitude);
+    char buff [18];
+    for(int i = 0; i<17; i++ ){
+      if (i<8){
+          buff[i] = latitude[i];
+      }
+      else if(i==8){
+          buff[i] = ' ';
+      }
+      else{
+          buff[i] = longitude[i%9  ];
+      }
+    }
+    buff[18] = '\0';
     IotSerial.listen();
     delay(1000);
-    Serial.println("Sending data: ");
-    Serial.println(sendByteData( latitude, 8));
-    Serial.println(sendByteData( longitude, 8));
+    sendByteData( buff, 18);
+    delay(1000);
+    //Serial.println("Sending data: ");
+    //Serial.println(sendByteData( buff, 18));
     GpsSerial.listen();
   }  
 }

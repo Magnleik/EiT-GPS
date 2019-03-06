@@ -3,7 +3,7 @@
 void GPSInit(){
 
  
-  Serial.println("Adafruit GPS library basic test!");
+  //Serial.println("Adafruit GPS library basic test!");
   GPS.begin(9600);
   GpsSerial.listen();
   // uncomment this line to turn on RMC (recommended minimum) and GGA (fix data) including altitude
@@ -15,9 +15,9 @@ void GPSInit(){
   delay(1000);
   // Ask for firmware version
   GpsSerial.println(PMTK_Q_RELEASE);
-  Serial.println("GPS init finished. ");
+  //Serial.println("GPS init finished. ");
   GPSFixReady();
-  Serial.println("GPS fixed");
+  //Serial.println("GPS fixed");
 }
 
 
@@ -26,10 +26,11 @@ void GPSFixReady(){
     //Serial.println("No GPS signal");
     GPSParse();
     GPSDebug();
-    if (millis()%1000 == 0){
-      Serial.print("GPS fix: ");
-      Serial.println(GPS.fix);
-
+    if (millis()%30000 == 0){
+      //Serial.print("GPS fix: ");
+      //Serial.println(GPS.fix);
+      sendStringData("NO FIX");
+      delay(1000);
     }
     //delay(10000);
   }
