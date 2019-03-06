@@ -34,7 +34,7 @@ class App extends Component {
       if (json === null) {
         return;
       }
-      this.setState({ data: json });
+      this.setState({ data: json, currentTime: json[json.length - 1].time });
       console.log(this.state);
     });
   }
