@@ -75,6 +75,7 @@ class App extends Component {
           width={window.innerWidth * 0.2 + "px"}
           data={this.state.data}
           changeMarker={this.changeMarker}
+          currentTime={this.state.currentTime}
         />
         <Map
           height={window.innerHeight + "px"}
