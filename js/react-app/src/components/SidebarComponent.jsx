@@ -8,8 +8,13 @@ const Wrapper = styled.div`
 `;
 
 export default class Sidebar extends Component {
+  constructor(props) {
+    super(props);
+    this.buttonClicked = this.buttonClicked.bind(this);
+  }
+
   buttonClicked(event) {
-    this.props.changeMarker(event.target.value);
+    this.props.changeMarker(parseInt(event.target.value, 10));
   }
 
   render() {

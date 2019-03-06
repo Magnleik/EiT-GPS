@@ -6,7 +6,7 @@ import Sidebar from "./components/SidebarComponent";
 const apiurl = "http://eit19gps-api-heroku.herokuapp.com/request";
 
 // Mock: 17dh0cf43jfgl8   Real: 17dh0cf43jfkmm
-const deviceID = "17dh0cf43jfgl8";
+const deviceID = "17dh0cf43jfkmm";
 
 class App extends Component {
   state = {
@@ -19,6 +19,11 @@ class App extends Component {
     currentTime: 1550668908,
     currentMarker: { lat: 63.09876, lng: 10.12345 }
   };
+
+  constructor(props) {
+    super(props);
+    this.changeMarker = this.changeMarker.bind(this);
+  }
 
   changeMarker(time) {
     this.setState({ currentTime: time });
@@ -34,19 +39,31 @@ class App extends Component {
     });
   }
 
-  componentDidUpdate(prevProps) {
-    for (let i = 0; i < this.state.data.length; i++) {
-      if (this.state.currentTime === this.state.data[i].time) {
-        this.setState({
-          currentMarker: {
-            lat: this.state.data[i].lat,
-            lng: this.state.data[i].lng
-          }
-        });
-        return;
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.currentTime !== this.state.currentTime) {
+      console.log("App update, current time: " + typeof this.state.currentTime);
+      for (let i = 0; i < this.state.data.length; i++) {
+        console.log(typeof this.state.data[i].time);
+        if (this.state.currentTime === this.state.data[i].time) {
+          this.setState({
+            currentMarker: {
+              lat: this.state.data[i].lat,
+              lng: this.state.data[i].lng
+            }
+          });
+          console.log("updated marker in state");
+          return;
+        }
       }
+      this.setState({
+        currentMarker: {
+          lat: this.state.data[this.state.data.length - 1].lat,
+          lng: this.state.data[this.state.data.length - 1].lng
+        }
+      });
+      console.log("marker to default");
     }
-    this.setState({currentMarker: {lat: this.state.data[this.state.data.length-1].lat, lng: this.state.data[this.state.data.length-1].lng}})
+
     return;
   }
 
@@ -57,6 +74,7 @@ class App extends Component {
           height={window.innerHeight + "px"}
           width={window.innerWidth * 0.2 + "px"}
           data={this.state.data}
+          changeMarker={this.changeMarker}
         />
         <Map
           height={window.innerHeight + "px"}
